@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroupe, Card, Button, ListGroup } from 'react-bootstrap'
 import Rating from "../components/Rating"
-import products from "../products"
+import axios from 'axios'
 
 const ProductScreen = ({ match }) => {
-  const product = products.find(product => product._id === match.params.id)
+
+  const [ product, setProduct ] = useState({})
+
+  useEffect(() => {
+    // On ne peut pas utiliser async/Await directement sur le useEffect, donc on doit créer une fonction qui servira d'étape intermédiare
+    // Raison pour laquelle on créer fetchProducts que l'on appelle juste après. On pourrait logiquement faire la requête axios et mettre à jour directement le state mais en raison de la limitation async/await sur le useEffect, on créer une fonction
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${match.params.id}`)
+      setProduct(data)
+    }
+
+    fetchProduct()
+  }, [])
+
   return (
     <>
       <Link className="btn btn-light my-3" to="/">Go Back </Link>
