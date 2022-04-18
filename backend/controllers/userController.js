@@ -8,8 +8,6 @@ import generateToken from "../utils/generateToken.js"
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
-  console.log("yoosssss", req)
-
   const user = await User.findOne({ email })
 
   // On fait appelle à une méthode dans le userModel
@@ -27,6 +25,30 @@ const authUser = asyncHandler(async (req, res) => {
   }
 })
 
+
+// @desc Get user profile
+// @route GET /api/users/profile
+// @access Private
+const getUserProfile = asyncHandler(async (req, res) => {
+
+  const user = await User.findById(req.user._id)
+
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    }
+    )
+  } else {
+    res.status(404)
+    throw new Error("User not found")
+  }
+
+})
+
 export {
-  authUser
+  authUser,
+  getUserProfile
 }
