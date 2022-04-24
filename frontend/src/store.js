@@ -3,7 +3,7 @@ import thunk from "redux-thunk"
 import { composeWithDevTools } from "redux-devtools-extension"
 import { productListReducer, productDetailsReducer } from "./reducers/productReducers"
 import { cartReducer } from "./reducers/cartReducers"
-import { userLoginReducer, userRegisterReducer, userDetailsReducer } from "./reducers/userReducers"
+import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer } from "./reducers/userReducers"
 
 // Redux State
 // - Dans le combineReducer on récupère tout ce que renvoient les autres reducers, ce qui en fait crée le state global de redux. 
@@ -19,6 +19,7 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
+  userUpdateProfile: userUpdateProfileReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem("cartItems")) : []
