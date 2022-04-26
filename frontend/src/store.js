@@ -9,7 +9,10 @@ import {
   userDetailsReducer,
   userUpdateProfileReducer
 } from "./reducers/userReducers"
-import { orderCreateReducer } from "./reducers/orderReducers"
+import {
+  orderCreateReducer,
+  orderDetailsReducer
+} from "./reducers/orderReducers"
 
 // Redux State
 // - Dans le combineReducer on récupère tout ce que renvoient les autres reducers, ce qui en fait crée le state global de redux. 
@@ -27,6 +30,7 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem("cartItems")) : []
