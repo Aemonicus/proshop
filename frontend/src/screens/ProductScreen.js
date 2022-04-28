@@ -6,6 +6,7 @@ import Message from "../components/Message"
 import Loader from "../components/Loader"
 import Rating from "../components/Rating"
 import { listProductDetails } from "../actions/productActions"
+import { addToCart } from "../actions/cartActions"
 
 const ProductScreen = ({ match, history }) => {
 
@@ -32,6 +33,12 @@ const ProductScreen = ({ match, history }) => {
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
+
+  // Version alternative qui ne dépend pas des query parameters
+  // const addToCartHandler = () => {
+  //   dispatch(addToCart(product._id, qty))
+  //   props.history.push('/cart')
+  // }
 
   return (
     <>
