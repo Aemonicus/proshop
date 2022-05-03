@@ -10,6 +10,7 @@ import ShippingScreen from './screens/ShippingScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
+import UserListScreen from './screens/UserListScreen'
 import { Container } from "react-bootstrap"
 import { BrowserRouter as Router, Route } from "react-router-dom"
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/product/:id" component={ProductScreen} />
           {/* En mettant un ? derrière le paramètre id, j'indique que le paramètre est facultatif. Si le client veut aller dans son shopping cart vide, il n'y aura pas d id donc le id ne doit pas être obligatoire */}
           <Route path="/cart/:id?" component={CartScreen} />
+          <Route path="/admin/userlist" component={UserListScreen} />
           <Route path="/" component={HomeScreen} exact />
         </Container>
       </main>
