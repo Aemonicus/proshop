@@ -32,9 +32,9 @@ app.use("/api/upload", uploadRoutes)
 app.get("/api/config/paypal", (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 
 // Pour utiliser __dirname sans la syntaxe "require" modules, on va "mimic" le comportement avec path.resolve()
-// On rend le dossier uploads static pour le rendre accessible par express
+// On rend le dossier uploads static pour le rendre accessible pour express
 const __dirname = path.resolve()
-app.use("/uploads", express.static(path.join(__dirname, "/uploads")))
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.use(notFound)
 

@@ -6,7 +6,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, "updloads/")
+    cb(null, "uploads/")
   },
   filename(req, file, cb) {
     cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 
 function checkFileType(file, cb) {
   const filetypes = /jpg|jpeg|png/
-  // On vérifie que l'extesion du fichier et le mimetype colle avec ce que l'on souhaite (au-dessus)
+  // On vérifie que l'extension du fichier et le mimetype colle avec ce que l'on souhaite (au-dessus) = renvoie true or false
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
   const mimetype = filetypes.test(file.mimetype)
 
