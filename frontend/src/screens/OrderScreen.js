@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import Message from "../components/Message"
 import Loader from "../components/Loader"
-import { getOrderDetails, payOrder } from '../actions/orderActions'
-import { ORDER_PAY_RESET } from "../constants/orderConstants"
+import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/orderConstants"
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
 
   const orderId = match.params.id
 
@@ -20,9 +20,16 @@ const OrderScreen = ({ match }) => {
   const orderDetails = useSelector(state => state.orderDetails)
   const { order, loading, error } = orderDetails
 
+  const userLogin = useSelector(state => state.userLogin)
+  const { userInfo } = userLogin
+
   const orderPay = useSelector(state => state.orderPay)
   // On change le nom pour éviter les doublons avec les const au-dessus
   const { loading: loadingPay, success: successPay } = orderPay
+
+  const orderDeliver = useSelector(state => state.orderDeliver)
+  // On change le nom pour éviter les doublons avec les const au-dessus
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
   if (!loading) {
     // Petit hack pour afficher deux chiffres après la virgule même si le second chiffre est un 0
@@ -35,6 +42,10 @@ const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
+
+    if (!userInfo) {
+      history.push("/login")
+    }
 
     // Ajout d'un script js de manière dynamique à une page
     const addPayPalScript = async () => {
@@ -49,8 +60,9 @@ const OrderScreen = ({ match }) => {
       document.body.appendChild(script)
     }
 
-    if (!order || successPay) {
+    if (!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET })
+      dispatch({ type: ORDER_DELIVER_RESET })
       dispatch(getOrderDetails(orderId))
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -63,11 +75,15 @@ const OrderScreen = ({ match }) => {
     // if (!order || order._id !== orderId) {
     //   dispatch(getOrderDetails(orderId))
     // }
-  }, [ order, orderId, dispatch, successPay, order._id ])
+  }, [ order, orderId, dispatch, successPay, successDeliver, order._id ])
 
   const successPaymentHandler = (paymentResult) => {
     console.log("yoyo", paymentResult)
     dispatch(payOrder(orderId, paymentResult))
+  }
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order))
   }
 
   return loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : <>
@@ -176,6 +192,12 @@ const OrderScreen = ({ match }) => {
                     onSuccess={successPaymentHandler}
                   />
                 )}
+              </ListGroup.Item>
+            )}
+            {loadingDeliver && <loader />}
+            {userInfo && userInfo.isAdmin && order.isPaid && !order.IsDelivered && (
+              <ListGroup.Item>
+                <Button type="button" className="btn btn-block" onClick={deliverHandler}>Mark as Delivered</Button>
               </ListGroup.Item>
             )}
           </ListGroup>
