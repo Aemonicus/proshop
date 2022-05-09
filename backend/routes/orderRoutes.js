@@ -3,7 +3,7 @@ import {
   addOrderItems,
   getOrderById,
   updateOrderToPaid,
-  updateToDelivered,
+  updateOrderToDelivered,
   getMyOrders,
   getOrders
 } from "../controllers/orderController.js"

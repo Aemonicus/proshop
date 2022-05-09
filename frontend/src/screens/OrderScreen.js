@@ -75,7 +75,7 @@ const OrderScreen = ({ match, history }) => {
     // if (!order || order._id !== orderId) {
     //   dispatch(getOrderDetails(orderId))
     // }
-  }, [ order, orderId, dispatch, successPay, successDeliver, order._id ])
+  }, [ orderId, dispatch, successPay, successDeliver, order ])
 
   const successPaymentHandler = (paymentResult) => {
     console.log("yoyo", paymentResult)
