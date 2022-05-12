@@ -4,15 +4,18 @@ import { Row, Col } from "react-bootstrap"
 import Product from "../components/Product"
 import Message from "../components/Message"
 import Loader from "../components/Loader"
+import Paginate from "../components/Paginate"
 import { listProducts } from "../actions/productActions"
 
 const HomeScreen = ({ match }) => {
 
   const keyword = match.params.keyword
 
+  const pageNumber = match.params.pageNumber || 1
+
   const dispatch = useDispatch()
   const productList = useSelector(state => state.productList)
-  const { loading, error, products } = productList
+  const { loading, error, products, page, pages } = productList
 
   useEffect(() => {
     // On ne peut pas utiliser async/Await directement sur le useEffect, donc on doit créer une fonction qui servira d'étape intermédiare
@@ -23,9 +26,9 @@ const HomeScreen = ({ match }) => {
     // }
     // fetchProducts()
 
-    dispatch(listProducts(keyword))
+    dispatch(listProducts(keyword, pageNumber))
 
-  }, [ dispatch, keyword ])
+  }, [ dispatch, keyword, pageNumber ])
 
 
   return (
@@ -36,13 +39,16 @@ const HomeScreen = ({ match }) => {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          {products.map(product => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={product} />
-            </Col>
-          ))}
-        </Row>
+        <>
+          <Row>
+            {products.map(product => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+          <Paginate pages={pages} page={page} keyword={keyword ? keyword : ""} />
+        </>
       )}
     </>
   )
