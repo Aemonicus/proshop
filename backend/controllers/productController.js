@@ -5,7 +5,15 @@ import Product from "../models/productModel.js"
 // @route Get /api/products
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({})
+  // On va vérifier si il y a un keyword dans la requête de l'url si l'utilisateur utilise la searchbox.
+  // On passe par une regex pour pouvoir faire remonter tous les mots qui correspondent même si l'utilisateur n'a pas entré parfaitement le nom, par exemple "iph" ou "iphone"
+  const keyword = req.query.keyword ? {
+    name: {
+      $regex: req.query.keyword,
+      $options: "i"
+    }
+  } : {}
+  const products = await Product.find({ ...keyword })
   res.json(products)
 })
 
