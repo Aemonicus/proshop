@@ -49,7 +49,7 @@ const ProductListScreen = ({ history, match }) => {
       // On passe une string vide car l'action listProducts prend en premier argument un keyword que l'on utilise pas ici
       dispatch(listProducts("", pageNumber))
     }
-  }, [ dispatch, history, userInfo, successDelete, successCreate, createdProduct ])
+  }, [ dispatch, history, userInfo, successDelete, successCreate, createdProduct, pageNumber ])
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
